@@ -23,19 +23,15 @@ class Conexion
         $this->password = $config['password'];
     }
 
-    public function getConexion(): array
+    public function getConexion(): PDO
     {
         try {
-            $mbd = new PDO("mysql:host={$this->host};dbname={$this->database}", $this->user, $this->password);
-            $mbd->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            $conexion = new PDO("mysql:host={$this->host};dbname={$this->database}", $this->user, $this->password);
+            $conexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-            foreach ($mbd->query('SELECT * from users') as $fila) {
-                $users[] = $fila;
-            }
-
-            return $users;
+            return $conexion;
         } catch (PDOException $e) {
-            print "¡Error!: " . $e->getMessage() . "<br/>";
+            print "¡Error!: " . $e->getMessage();
             die();
         }
     }
