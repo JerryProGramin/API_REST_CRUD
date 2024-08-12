@@ -44,16 +44,31 @@ class UserRepository
 
     public function register(string $email, string $password): void
     {
-
+        $Conexion = new Conexion();
+        $PDO = $Conexion->getConexion();
+        $stmt = $PDO->prepare('INSERT INTO users (email, password) VALUES (:email, :password)');
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->execute();
     }
 
     public function update(int $userId, string $email, string $password): void
     {
-
+        $Conexion = new Conexion();
+        $PDO = $Conexion->getConexion();
+        $stmt = $PDO->prepare('UPDATE users SET email = :email, password = :password WHERE id = :id');
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->execute();
     }
 
     public function delete(int $userId): void
     {
-
+        $Conexion = new Conexion();
+        $PDO = $Conexion->getConexion();
+        $stmt = $PDO->prepare('DELETE FROM users WHERE id = :id');
+        $stmt->bindParam(':id', $UsersId, PDO::PARAM_INT);
+        $stmt->execute();
     }
 }

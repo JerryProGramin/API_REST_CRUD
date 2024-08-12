@@ -16,7 +16,10 @@ class SuppliersRepository{
     {
         $Conexion = new Conexion();
         $PDO = $Conexion->getConexion();
-        foreach ($PDO->query('SELECT * from suppliers') as $fila) {
+        foreach ($PDO->query('SELECT l.id, l.brand, l.model, l.specifications, l.price, l.description, l.release_date, s.name as Name_supplier, s.contact_info as Contact_supplier, s.email as Email_supplier 
+                            From suppliers s 
+                            RIGHT JOIN laptops l 
+                            ON s.id = l.supplier_id') as $fila) {
             $Suppliers[] = $fila;
         }
 

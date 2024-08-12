@@ -1,28 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
-use Src\Database\Conexion;
-use Src\Repository\UserRepository;
-use Src\Repository\SuppliersRepository;
-
+// Configura el autoloading si estás usando Composer
 require 'vendor/autoload.php';
+
+// Incluye el archivo del enrutador
+require 'Router/Router.php';
+
+// Usa el namespace del enrutador
+use Router\Router;
 
 header('Content-Type: application/json; charset=utf-8');
 
-$repository = new SuppliersRepository();
-$suppliers = $repository->getAll();
-echo json_encode($suppliers, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+// Crea una instancia del enrutador y carga las rutas
+$router = new Router(__DIR__ . '/Router/routes.php');
 
-// $repository = new SuppliersRepository();
-// $suppliers = $repository->getById(2);
-// echo json_encode($suppliers->jsonSerialize());
+// Obtiene la URI y el método de la solicitud
+$requestUri = $_SERVER['REQUEST_URI'];
+$requestMethod = $_SERVER['REQUEST_METHOD'];
 
-// $repository = new SuppliersRepository();
-// $suppliers = $repository->register("Proveedor Asus","Información",984464841,"asus@gmail.com");
-
-// $repository = new SuppliersRepository();
-// $suppliers = $repository->update(1,"JerryProveedor","InformaciónJErry",957546546,"jerryproveer@gmail.com");
-
-// $repository = new SuppliersRepository();
-// $suppliers = $repository->delete(4);
+// Despacha la solicitud al enrutador
+$router->dispatch($requestMethod, $requestUri);
