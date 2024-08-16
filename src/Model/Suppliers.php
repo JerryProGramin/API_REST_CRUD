@@ -7,7 +7,7 @@ class Suppliers {
         private int $Id,
         private string $Name,
         private string $ContactInfo,
-        private int $Phone,
+        private string $Phone,
         private string $Email
     ){
     }
@@ -24,7 +24,7 @@ class Suppliers {
         return $this->ContactInfo;
     }
 
-    public function getPhone(): int {
+    public function getPhone(): string {
         return $this->Phone;
     }
 

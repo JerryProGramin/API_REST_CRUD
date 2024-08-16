@@ -16,10 +16,7 @@ class SuppliersRepository{
     {
         $Conexion = new Conexion();
         $PDO = $Conexion->getConexion();
-        foreach ($PDO->query('SELECT l.id, l.brand, l.model, l.specifications, l.price, l.description, l.release_date, s.name as Name_supplier, s.contact_info as Contact_supplier, s.email as Email_supplier 
-                            From suppliers s 
-                            RIGHT JOIN laptops l 
-                            ON s.id = l.supplier_id') as $fila) {
+        foreach ($PDO->query('SELECT * From suppliers') as $fila) {
             $Suppliers[] = $fila;
         }
 
@@ -45,19 +42,19 @@ class SuppliersRepository{
         );
     }
 
-    public function register(string $Names, string $ContactInfo, int $Phone, string $Email): void
+    public function register(string $Names, string $ContactInfo, string $Phone, string $Email): void
     {
         $Conexion = new Conexion();
         $PDO = $Conexion->getConexion();
         $stmt = $PDO->prepare('INSERT INTO suppliers (name, contact_info, phone, email) VALUES (:name, :contact_info, :phone, :email)');
         $stmt->bindParam(':name', $Names, PDO::PARAM_STR);
         $stmt->bindParam(':contact_info', $ContactInfo, PDO::PARAM_STR);
-        $stmt->bindParam(':phone', $Phone, PDO::PARAM_INT);
+        $stmt->bindParam(':phone', $Phone, PDO::PARAM_STR);
         $stmt->bindParam(':email', $Email, PDO::PARAM_STR);
         $stmt->execute();
     }
 
-    public function update(int $id, string $Names, string $ContactInfo, int $Phone, string $Email): void
+    public function update(int $id, string $Names, string $ContactInfo, string $Phone, string $Email): void
     {
         $Conexion = new Conexion();
         $PDO = $Conexion->getConexion();
@@ -65,7 +62,7 @@ class SuppliersRepository{
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->bindParam(':name', $Names, PDO::PARAM_STR);
         $stmt->bindParam(':contact_info', $ContactInfo, PDO::PARAM_STR);
-        $stmt->bindParam(':phone', $Phone, PDO::PARAM_INT);
+        $stmt->bindParam(':phone', $Phone, PDO::PARAM_STR);
         $stmt->bindParam(':email', $Email, PDO::PARAM_STR);
         $stmt->execute();
     }

@@ -7,33 +7,32 @@ namespace Src\Model;
 class User
 {
     public function __construct(
-        private int $id,
-        private string $email,
-        private string $password,
+        private int $Id,
+        private string $Email,
+        //private string $Password,
     ) {
     }
 
     public function getId(): int
     {
-        return $this->id;
+        return $this->Id;
     }
 
     public function getEmail(): string
     {
-        return $this->email;
+        return $this->Email;
     }
 
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
+    // public function getPassword(): string
+    // {
+    //     return $this->Password;
+    // }
 
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->id,
-            'email' => $this->email,
-            'password' => $this->password,
+            'id' => $this->Id,
+            'email' => $this->Email, 
         ];
     }
 }

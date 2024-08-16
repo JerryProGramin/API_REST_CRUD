@@ -5,36 +5,39 @@ use Src\Model\Suppliers;
 use Src\Repository\SuppliersRepository;
 use Src\Controller\SuppliersController;
 use Src\Repository\UserRepository;
-
+use Src\Controller\OrdersController;
+use Src\Repository\OrderRepository;
+use Src\Repository\OrderDetailsRepository;
+use Src\Controller\OrderDetailsController;
 // Cargar el autoloading si estás usando Composer
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Crear instancias necesarias
-$SuppliersRepository = new SuppliersRepository();
-$SuppliersController = new SuppliersController($SuppliersRepository);
+$OrderDetailsRepository = new OrderDetailsRepository();
+$OrderDetailsController = new OrderDetailsController($OrderDetailsRepository);
 
 return [
   'GET' => [
-    'suppliers' => function () use ($SuppliersController) {
-      $SuppliersController->index();
+    'order_details' => function () use ($OrderDetailsController) {
+      $OrderDetailsController->index();
     },
-    'suppliers/{id}' => function ($userId) use ($SuppliersController) {
-      $SuppliersController->show((int)$userId);
-    }
+    // 'order_details/{id}' => function ($OrderDetailsId) use ($OrderDetailsController) {
+    //   $OrderDetailsController->show((int)$OrderDetailsId);
+    // }
   ],
-  'POST' => [
-    'suppliers' => function () use ($SuppliersController) {
-      $SuppliersController->store();
-      },
-  ],
-  'PUT' => [
-    'posts' => function () {
-      require __DIR__ . '/../src/controllers/updatePostController.php';
-      },
-  ],
-  'DELETE' => [
-    'posts' => function () {
-      require __DIR__ . '/../src/controllers/deletePostController.php';
-    },
-  ],
+  // 'POST' => [
+  //   'suppliers' => function () use ($SuppliersController) {
+  //     $SuppliersController->store();
+  //   },
+  // ],
+  // 'PUT' => [
+  //   'suppliers/{id}' => function ($id) use ($SuppliersController) {
+  //     $SuppliersController->update((int)$id);
+  //   },
+  // ],
+  // 'DELETE' => [
+  //   'suppliers/{id}' => function ($id) use ($SuppliersController) {
+  //     $SuppliersController->delete((int)$id);
+  //   },
+  // ],
 ];

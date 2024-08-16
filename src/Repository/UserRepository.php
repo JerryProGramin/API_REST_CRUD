@@ -36,9 +36,8 @@ class UserRepository
 
         $user = $stmt->fetchAll();
         return new User(
-            id: $user[0]['id'],
-            email: $user[0]['email'],
-            password: $user[0]['password'],
+            Id: $user[0]['id'],
+            Email: $user[0]['email'],
         );
     }
 
@@ -68,7 +67,7 @@ class UserRepository
         $Conexion = new Conexion();
         $PDO = $Conexion->getConexion();
         $stmt = $PDO->prepare('DELETE FROM users WHERE id = :id');
-        $stmt->bindParam(':id', $UsersId, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         $stmt->execute();
     }
 }
