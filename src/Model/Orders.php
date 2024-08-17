@@ -10,9 +10,9 @@ class Orders
 {
     public function __construct(
         private int $Id,
-        private int $UserId,
-        private DateTime $DateOrder,
-        private int $PaymentMethodId,
+        private User $UserId,
+        private ?DateTime $DateOrder,
+        private PaymentMethod $PaymentMethodId,
         private float $OrderTotal
     ){ 
     }
@@ -21,15 +21,15 @@ class Orders
         return $this->Id;
     }
 
-    public function getUserId(): int {
+    public function getUserId(): User {
         return $this->UserId;
     }
 
-    public function getDateOrder(): DateTime {
+    public function getDateOrder(): ?DateTime {
         return $this->DateOrder;
     }
 
-    public function getPaymentMethodId(): int {
+    public function getPaymentMethodId(): PaymentMethod {
         return $this->PaymentMethodId;
     }
 
@@ -41,9 +41,9 @@ class Orders
     {
         return [
             'id' => $this->Id,
-            'user_id' => $this->UserId,
+            'user_id' => $this->UserId->jsonSerialize(),
             'date_order' => $this->DateOrder->format('Y-m-d H:i:s'),
-            'payment_method_id' => $this->PaymentMethodId,
+            'payment_method_id' => $this->PaymentMethodId->jsonSerialize(),
             'order_total' => $this->OrderTotal
         ];
     }

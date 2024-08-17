@@ -16,8 +16,8 @@ class OrderDetailsController
         $OrderDetails = $this->orderDetailsRepository->getAll();
         echo json_encode($OrderDetails);
     }
-    // public function show(int $id): void {
-    //     $OrderDetails = $this->orderDetailsRepository->getById($id);
-    //     echo json_encode($OrderDetails);
-    // }
+    public function show(int $id): void {
+        $OrderDetails = $this->orderDetailsRepository->getById($id);
+        echo json_encode($OrderDetails);
+    }
 }

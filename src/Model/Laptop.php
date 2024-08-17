@@ -16,8 +16,8 @@ class Laptop
         private string $Specifications = '', 
         private float $Price = 0.0,
         private string $Description = '',
-        private ?DateTime $Release_date = null,
-        private ?int $SupplierId = null
+        private ?DateTime $ReleaseDate = null,
+        private ?Suppliers $SupplierId = null
     ){        
     }
     
@@ -51,12 +51,12 @@ class Laptop
         return $this->Description;
     }
     
-    public function getReleaseDate(): DateTime
+    public function getReleaseDate(): ?DateTime
     {
-        return $this->Release_date;
+        return $this->ReleaseDate;
     }
     
-    public function getSupplierId(): int
+    public function getSupplierId(): ?Suppliers
     {
         return $this->SupplierId;
     }
@@ -87,12 +87,12 @@ class Laptop
             $data['Description'] = $this->Description;
         }
 
-        if ($this->Release_date !== null) {
-            $data['Release_date'] = $this->Release_date->format('Y-m-d');
+        if ($this->ReleaseDate !== null) {
+            $data['Release_date'] = $this->ReleaseDate->format('Y-m-d');
         }
 
         if ($this->SupplierId !== null) {
-            $data['SupplierId'] = $this->SupplierId;
+            $data['SupplierId'] = $this->SupplierId->jsonSerialize();
         }
 
         return $data;

@@ -21,9 +21,9 @@ return [
     'order_details' => function () use ($OrderDetailsController) {
       $OrderDetailsController->index();
     },
-    // 'order_details/{id}' => function ($OrderDetailsId) use ($OrderDetailsController) {
-    //   $OrderDetailsController->show((int)$OrderDetailsId);
-    // }
+    'order_details/{id}' => function ($OrderDetailsId) use ($OrderDetailsController) {
+      $OrderDetailsController->show((int)$OrderDetailsId);
+    }
   ],
   // 'POST' => [
   //   'suppliers' => function () use ($SuppliersController) {
