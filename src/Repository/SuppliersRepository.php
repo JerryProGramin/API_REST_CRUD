@@ -9,14 +9,16 @@ use Src\Model\Suppliers;
 
 class SuppliersRepository{
 
+    private PDO $pdo;
     public function __construct(){
+        $conexion = new Conexion();
+        $this->pdo = $conexion->getConexion();
     }
 
     public function getAll(): array
     {
-        $Conexion = new Conexion();
-        $PDO = $Conexion->getConexion();
-        foreach ($PDO->query('SELECT * From suppliers') as $fila) {
+        $pdo = $this->pdo;
+        foreach ($pdo->query('SELECT * From suppliers') as $fila) {
             $Suppliers[] = $fila;
         }
 
@@ -25,20 +27,18 @@ class SuppliersRepository{
 
     public function getById(int $SuppliersId): Suppliers
     {
-        $Conexion = new Conexion();
-        $pdo = $Conexion->getConexion();
-
+        $pdo = $this->pdo;
         $stmt = $pdo->prepare('SELECT * FROM suppliers WHERE id = :id');
         $stmt->bindParam(':id', $SuppliersId, PDO::PARAM_INT);
         $stmt->execute();
 
         $Suppliers = $stmt->fetchAll();
         return new Suppliers(
-            Id: $Suppliers[0]['id'],
-            Name: $Suppliers[0]['name'],
-            ContactInfo: $Suppliers[0]['contact_info'],
-            Phone: $Suppliers[0]['phone'],
-            Email: $Suppliers[0]['email'],
+            id: $Suppliers[0]['id'],
+            name: $Suppliers[0]['name'],
+            contactInfo: $Suppliers[0]['contact_info'],
+            phone: $Suppliers[0]['phone'],
+            email: $Suppliers[0]['email'],
         );
     }
 

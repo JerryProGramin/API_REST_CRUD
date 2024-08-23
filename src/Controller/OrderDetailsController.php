@@ -12,12 +12,24 @@ class OrderDetailsController
     ){
         $this->orderDetailsRepository = $orderDetailsRepository;
     }
-    public function index(): void {
+    public function indexOrderDetails(): void {
         $OrderDetails = $this->orderDetailsRepository->getAll();
         echo json_encode($OrderDetails);
     }
-    public function show(int $id): void {
+    public function showOrderDetails(int $id): void {
         $OrderDetails = $this->orderDetailsRepository->getById($id);
         echo json_encode($OrderDetails);
+    }
+
+    public function storeOrderDetails(): void {
+        // Implement the logic to create a new OrderDetails record
+    }
+
+    public function updateOrderDetails(): void {
+        // Implement the logic to update an existing OrderDetails record
+    }
+
+    public function deleteOrderDetails(): void {
+        // Implement the logic to delete an existing OrderDetails record
     }
 }

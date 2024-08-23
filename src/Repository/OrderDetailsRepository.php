@@ -12,45 +12,61 @@ use Src\Model\Orders;
 use Src\Model\OrdersDetails;
 use Exception;
 use Src\Model\PaymentMethod;
+use Src\Model\Products;
 use Src\Model\Suppliers;
 use Src\Model\User;
 
 class OrderDetailsRepository
 {
+    private PDO $pdo;
     public function __construct()
     {
+        $conexion = new Conexion();
+        $this->pdo = $conexion->getConexion();
     }
     
     
     public function getAll(): array
     {
-        $conexion = new Conexion();
-        $pdo = $conexion->getConexion();
 
-        $query = 'SELECT od.*, o.* , l.id, l.brand, l.model, l.price
+        $query = 'SELECT od.*, o.* , p.id, p.brand, p.model, p.price, u.id as user_id, pm.id as payment_method_id, pm.name, pm.details
                 FROM order_details od
                 INNER JOIN orders o ON od.order_id = o.id
-                INNER JOIN laptops l ON od.laptop_id = l.id';
-        $stmt = $pdo->query($query);
+                INNER JOIN products p ON od.laptop_id = p.id
+                INNER JOIN users u ON o.user_id = u.id
+                INNER JOIN payment_methods pm ON o.payment_method_id = pm.id';
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
         
         $ordersDetails = [];
         while ($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             $dateOrder = new DateTime($fila['date_order']);
 
-            $orders = new Orders(
-                Id: (int)$fila['id'],
-                UserId: $fila['user_id'],
-                DateOrder: $dateOrder,
-                PaymentMethodId: $fila['payment_method_id'],
-                OrderTotal: (float)$fila['order_total'],
+            $user = new User(
+                id: (int)$fila['user_id'],
             );
 
-            $laptops = new Laptop(
-                Id: (int)$fila['id'],
-                Brand: $fila['brand'],
-                Model: $fila['model'],
-                Price: isset($fila['price']) ? (float)$fila['price'] : 0.0,
+            $payment = new PaymentMethod(
+                id: (int)$fila['payment_method_id'],
+                name: $fila['name_method'],
+                details: $fila['details'],
+            );
+
+            $orders = new Orders(
+                id: (int)$fila['id'],
+                userId: $user,
+                date: $dateOrder,
+                paymentMethodId: $payment,
+                total: (float)$fila['order_total'],
+            );
+
+            $laptops = new Products(
+                id: (int)$fila['id'],
+                brand: $fila['brand'],
+                model: $fila['model'],
+                price: isset($fila['price']) ? (float)$fila['price'] : 0.0,
             );
 
             $ordersDetails[] = [
@@ -86,49 +102,45 @@ class OrderDetailsRepository
             throw new Exception('No se encontraron detalles del pedido.');
         }
 
-        // if (!isset($fila['date_order']) || empty($fila['date_order'])) {
-        //     throw new Exception('Date order is missing or invalid.');
-        // }
-
-        $dateOrder = new DateTime($fila['date_order']);
+        $dateOrder = new DateTime($fila['date']);
         $releaseDate = new DateTime($fila['release_date']);
 
         $user = new User(
-            Id: (int)$fila['user_id'],
-            Email: $fila['email'],
+            id: (int)$fila['user_id'],
+            email: $fila['email'],
         );
 
         $payment = new PaymentMethod(
-            Id: (int)$fila['id'],
-            NameMethod: $fila['name_method'],
-            Details: $fila['details'],
+            id: (int)$fila['id'],
+            name: $fila['name'],
+            details: $fila['details'],
         );
 
         $orders = new Orders(
-            Id: (int)$fila['order_id'],
-            UserId: $user,
-            DateOrder: $dateOrder,
-            PaymentMethodId: $payment,
-            OrderTotal: (float)$fila['order_total']
+            id: (int)$fila['order_id'],
+            userId: $user,
+            date: $dateOrder,
+            paymentMethodId: $payment,
+            total: (float)$fila['total']
         );
 
         $supplier = new Suppliers(
-            Id: (int)$fila['id'],
-            Name: $fila['name'],
-            ContactInfo: $fila['contact_info'],
-            Phone: $fila['phone'],
-            Email: $fila['email'],
+            id: (int)$fila['id'],
+            name: $fila['name'],
+            contactInfo: $fila['contact_info'],
+            phone: $fila['phone'],
+            email: $fila['email'],
         );
 
-        $laptops = new Laptop(
-            Id: (int)$fila['laptop_id'],
-            Brand: $fila['brand'],
-            Model: $fila['model'],
-            Price: isset($fila['price']) ? (float)$fila['price'] : 0.0,
-            Specifications: $fila['specifications'],
-            Description: $fila['description'],
-            ReleaseDate: $releaseDate,
-            SupplierId: $supplier,
+        $laptops = new Products(
+            id: (int)$fila['laptop_id'],
+            brand: $fila['brand'],
+            model: $fila['model'],
+            price: isset($fila['price']) ? (float)$fila['price'] : 0.0,
+            specifications: $fila['specifications'],
+            description: $fila['description'],
+            releaseDate: $releaseDate,
+            supplierId: $supplier,
         );
 
         return [

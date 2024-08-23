@@ -7,40 +7,40 @@ namespace Src\Model;
 class OrdersDetails 
 {
     public function __construct(
-        private int $Id,
-        private int $OrderId,
-        private int $LaptopId,
-        private float $PriceUnit
+        private int $id,
+        private Orders $orderId,
+        private Products $productsId,
+        private float $priceUnit
     ) {
     }
 
-    public function getId(): int
-    {
-        return $this->Id;
-    }
+    // public function getId(): int
+    // {
+    //     return $this->id;
+    // }
     
-    public function getOrderId(): int
-    {
-        return $this->OrderId;
-    }
+    // public function getOrderId(): Orders
+    // {
+    //     return $this->orderId;
+    // }
     
-    public function getLaptopId(): int
-    {
-        return $this->LaptopId;
-    }
+    // public function getLaptopId(): Products
+    // {
+    //     return $this->productsId;
+    // }
 
-    public function getPriceUnit(): float
-    {
-        return $this->PriceUnit;
-    }
+    // public function getPriceUnit(): float
+    // {
+    //     return $this->priceUnit;
+    // }
 
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->Id,
-            'order_id' => $this->OrderId,
-            'laptop_id' => $this->LaptopId,
-            'price_unit' => $this->PriceUnit
+            'id' => $this->id,
+            'order_id' => $this->orderId->jsonSerialize(),
+            'laptop_id' => $this->productsId->jsonSerialize(),
+            'price_unit' => $this->priceUnit
         ];
     }
 }

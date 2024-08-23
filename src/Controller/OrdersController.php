@@ -12,12 +12,31 @@ class OrdersController
     ){
         $this->orderRepository = $orderRepository;
     }
-    public function index(): void {
+    public function indexOrders(): void {
         $Order = $this->orderRepository->getAll();
         echo json_encode($Order);
     }
-    // public function show(int $id): void {
-    //     $Order = $this->orderRepository->getById($id);
-    //     echo json_encode($Order->jsonSerialize());
-    // }
+    public function showOrders(int $id): void {
+        $Order = $this->orderRepository->getById($id);
+        echo json_encode($Order);
+    }
+
+    public function storeOrders(): void {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $this->orderRepository->register($data['user_id'], $data['date'], $data['payment_method_id'], $data['total']);
+        echo json_encode(['message' => 'Orden registrada exitosamente']);
+    }
+
+    public function updateOrders(int $id): void {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $this->orderRepository->update($id, $data['user_id'], $data['date'], $data['payment_method_id'], $data['total']);
+        echo json_encode(['message' => 'Orden actualizada exitosamente']);
+    }
+
+    public function deleteOrders(int $id): void {
+        $this->orderRepository->delete($id);
+        echo json_encode(['message' => 'Orden eliminada exitosamente']);
+    }
 }

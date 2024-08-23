@@ -9,42 +9,42 @@ use DateTime;
 class Orders
 {
     public function __construct(
-        private int $Id,
-        private User $UserId,
-        private ?DateTime $DateOrder,
-        private PaymentMethod $PaymentMethodId,
-        private float $OrderTotal
+        private int $id,
+        private User $userId,
+        private ?DateTime $date,
+        private PaymentMethod $paymentMethodId,
+        private float $total
     ){ 
     }
 
-    public function getId(): int {
-        return $this->Id;
-    }
+    // public function getId(): int {
+    //     return $this->Id;
+    // }
 
-    public function getUserId(): User {
-        return $this->UserId;
-    }
+    // public function getUserId(): User {
+    //     return $this->UserId;
+    // }
 
-    public function getDateOrder(): ?DateTime {
-        return $this->DateOrder;
-    }
+    // public function getDateOrder(): ?DateTime {
+    //     return $this->DateOrder;
+    // }
 
-    public function getPaymentMethodId(): PaymentMethod {
-        return $this->PaymentMethodId;
-    }
+    // public function getPaymentMethodId(): PaymentMethod {
+    //     return $this->PaymentMethodId;
+    // }
 
-    public function getOrderTotal(): float {
-        return $this->OrderTotal;
-    }
+    // public function getOrderTotal(): float {
+    //     return $this->OrderTotal;
+    // }
     
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->Id,
-            'user_id' => $this->UserId->jsonSerialize(),
-            'date_order' => $this->DateOrder->format('Y-m-d H:i:s'),
-            'payment_method_id' => $this->PaymentMethodId->jsonSerialize(),
-            'order_total' => $this->OrderTotal
+            'id' => $this->id,
+            'user_id' => $this->userId->jsonSerialize(),
+            'date_order' => $this->date->format('Y-m-d H:i:s'),
+            'payment_method_id' => $this->paymentMethodId->jsonSerialize(),
+            'order_total' => $this->total
         ];
     }
 }
